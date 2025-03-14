@@ -20,6 +20,12 @@ export default function QuestionRound() {
     }
   };
 
+  const shareOnWhatsApp = () => {
+    const message = `Name: ${answers.name}\nDrink: ${answers.drink}\nWeed: ${answers.weed}\nComment: ${answers.comment || "No comment"}`;
+    const url = `https://wa.me/918011088795?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-gradient-to-r from-blue-400 to-purple-500">
       <header className="text-4xl font-bold mb-6 text-white">Room Unlucky 13</header>
@@ -87,15 +93,20 @@ export default function QuestionRound() {
         )}
 
         {step === 5 && (
-          <div ref={resultRef} className="p-6 text-center bg-gray-100 border border-gray-300 rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-4">🎟️ Your Receipt 🎟️</h2>
-            <p className="text-lg mb-2"><strong>Name:</strong> {answers.name}</p>
-            <p className="text-lg mb-2"><strong>Drink:</strong> {answers.drink}</p>
-            <p className="text-lg mb-2"><strong>Weed:</strong> {answers.weed}</p>
-            <p className="text-lg mb-2"><strong>Comment:</strong> {answers.comment || "No comment"}</p>
-            <p className="text-gray-600 mt-4">Thank you for visiting Room Unlucky 13! 🍻</p>
+          <div>
+            <div ref={resultRef} className="p-6 text-center bg-gray-100 border border-gray-300 rounded-lg shadow-md">
+              <h2 className="text-2xl font-bold mb-4">🎟️ Your Receipt 🎟️</h2>
+              <p className="text-lg mb-2"><strong>Name:</strong> {answers.name}</p>
+              <p className="text-lg mb-2"><strong>Drink:</strong> {answers.drink}</p>
+              <p className="text-lg mb-2"><strong>Weed:</strong> {answers.weed}</p>
+              <p className="text-lg mb-2"><strong>Comment:</strong> {answers.comment || "No comment"}</p>
+              <p className="text-gray-600 mt-4">Thank you for visiting Room Unlucky 13! 🍻</p>
+            </div>
             <button className="w-full p-3 mt-4 bg-green-600 text-white rounded-lg hover:bg-green-700" onClick={generateImage}>
               Download as Image
+            </button>
+            <button className="w-full p-3 mt-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700" onClick={shareOnWhatsApp}>
+              Share on WhatsApp
             </button>
             <button className="w-full p-3 mt-2 bg-gray-500 text-white rounded-lg" onClick={() => setStep(1)}>
               Restart
