@@ -1,18 +1,31 @@
-import React from "react";
-import { useState } from "react";
-
+import React, { useRef, useState } from "react";
+import { toPng } from "html-to-image";
+import { saveAs } from "file-saver";
 
 export default function QuestionRound() {
   const [step, setStep] = useState(1);
   const [answers, setAnswers] = useState({ drink: "", weed: "", comment: "" });
+  const resultRef = useRef();
 
   const handleNext = (key, value) => {
     setAnswers((prev) => ({ ...prev, [key]: value }));
     setStep((prev) => prev + 1);
   };
 
+  // Function to generate & download PDF (as an image)
+  const generatePDF = () => {
+    if (resultRef.current) {
+      toPng(resultRef.current).then((dataUrl) => {
+        saveAs(dataUrl, "room_unlucky_13.png");
+      });
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
+      {/* HEADER */}
+      <header className="text-3xl font-bold mb-6 text-red-600">Room Unlucky 13</header>
+
       <div className="w-full max-w-md p-6 bg-white shadow-lg rounded-2xl">
         {step === 1 && (
           <div>
@@ -58,12 +71,19 @@ export default function QuestionRound() {
         )}
 
         {step === 4 && (
-          <div>
+          <div ref={resultRef} className="p-4">
             <h2 className="text-xl font-semibold mb-4">Your Choices:</h2>
             <p><strong>Drink:</strong> {answers.drink}</p>
             <p><strong>Weed:</strong> {answers.weed}</p>
             <p><strong>Comment:</strong> {answers.comment || "No comment"}</p>
-            <button className="w-full p-2 mt-4 bg-gray-500 text-white rounded-lg" onClick={() => setStep(1)}>
+
+            {/* PDF Generation Button */}
+            <button className="w-full p-2 mt-4 bg-green-500 text-white rounded-lg" onClick={generatePDF}>
+              Download as Image
+            </button>
+
+            {/* Restart Button */}
+            <button className="w-full p-2 mt-2 bg-gray-500 text-white rounded-lg" onClick={() => setStep(1)}>
               Restart
             </button>
           </div>
